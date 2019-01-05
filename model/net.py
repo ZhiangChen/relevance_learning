@@ -4,7 +4,7 @@ from keras.optimizers import *
 from model.utils import mse
 
 
-def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2):
+def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_only=True):
   inputs = Input(input_size)
 
   # Conv part
@@ -63,11 +63,18 @@ def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2):
   conv9_2 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(merge9_2)
   conv9_2 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(conv9_2)
   # Heatmap output
-  conv9_2 = Conv2D(1, 3, activation='softmax', padding='same', kernel_initializer='he_normal', name='heatmap')(conv9_2)
+  conv9_2 = Conv2D(1, 3, activation='linear', padding='same', kernel_initializer='he_normal', name='heatmap')(conv9_2)
 
   model = Model(inputs=inputs, output=[conv9, conv9_2])
-  model.compile(optimizer=Adam(lr=1e-4), loss={'segmentation': 'binary_crossentropy', 'heatmap':'mean_squared_error'},
+  if not seg_only:
+    model.compile(optimizer=Adam(lr=1e-4), loss={'segmentation': 'binary_crossentropy', 'heatmap':'mean_squared_error'},
+                  loss_weights={'segmentation':1, 'heatmap': 10},
                 metrics={'segmentation': 'accuracy', 'heatmap': mse})
+  else:
+    model.compile(optimizer=Adam(lr=1e-4),
+                  loss={'segmentation': 'binary_crossentropy', 'heatmap': 'mean_squared_error'},
+                  loss_weights={'segmentation': 1, 'heatmap': 0},
+                  metrics={'segmentation': 'accuracy', 'heatmap': mse})
 
   # model.summary()
 
