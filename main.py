@@ -26,10 +26,10 @@ ap.add_argument('-c', '--class_num', default=2, dest='class_num')
 args = ap.parse_args()
 
 data_gen_args = dict(horizontal_flip=True,)
-batch_size = 30
-train_path = './training_data'
-valid_path = './validation_data'
-test_path = './test_data'
+batch_size = 16
+train_path = '../scale6_train/multiclass/heatmap_train/train/training'
+valid_path = '../scale6_train/multiclass/heatmap_train/train/validation'
+test_path = '../scale6_train/multiclass/heatmap_train/train/validation'
 image_folder = 'images'
 mask_folder = 'masks'
 heatmap_folder = 'heatmaps'
