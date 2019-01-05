@@ -39,17 +39,31 @@ target_size = (256, 256)
 #                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
 #                    flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1)
 if not args.use_pfile:
-  myGene = trainGenerator(batch_size=args.batch_size, train_path=args.train_path, image_folder=args.image_folder, mask_folder=args.mask_folder,
-                        heatmap_folder=args.heatmap_folder, aug_dict=data_gen_args, image_color_mode="rgb",
-                   mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
-                   flag_multi_class=True, num_class=args.class_num, save_to_dir=None, target_size=(args.h, args.w), seed=1)
-  myValGene = trainGenerator(batch_size=args.batch_size, train_path=args.valid_path, image_folder=args.image_folder,
-                          mask_folder=args.mask_folder,
-                          heatmap_folder=args.heatmap_folder, aug_dict=data_gen_args, image_color_mode="rgb",
+  # myGene = trainGenerator(batch_size=args.batch_size, train_path=args.train_path, image_folder=args.image_folder, mask_folder=args.mask_folder,
+  #                       heatmap_folder=args.heatmap_folder, aug_dict=data_gen_args, image_color_mode="rgb",
+  #                  mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
+  #                  flag_multi_class=True, num_class=args.class_num, save_to_dir=None, target_size=(args.h, args.w), seed=1)
+  myGene = trainGenerator(args.batch_size, args.train_path, args.image_folder,
+                          args.mask_folder,
+                          args.heatmap_folder, data_gen_args, image_color_mode="rgb",
                           mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                           heatmap_save_prefix="heatmap",
                           flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
                           target_size=(args.h, args.w), seed=1)
+  # myValGene = trainGenerator(batch_size=args.batch_size, train_path=args.valid_path, image_folder=args.image_folder,
+  #                         mask_folder=args.mask_folder,
+  #                         heatmap_folder=args.heatmap_folder, aug_dict=data_gen_args, image_color_mode="rgb",
+  #                         mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
+  #                         heatmap_save_prefix="heatmap",
+  #                         flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
+  #                         target_size=(args.h, args.w), seed=1)
+  myValGene = trainGenerator(args.batch_size, args.valid_path, args.image_folder,
+                             args.mask_folder,
+                             args.heatmap_folder, data_gen_args, image_color_mode="rgb",
+                             mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
+                             heatmap_save_prefix="heatmap",
+                             flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
+                             target_size=(args.h, args.w), seed=1)
 else:
   myGene = trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, data_gen_args, image_color_mode="rgb",
                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
