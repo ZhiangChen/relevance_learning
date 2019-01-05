@@ -13,6 +13,7 @@ def adjustData(img, mask, heatmap, flag_multi_class, num_class):
     img = img / 255.0
   # mask to one-hot
   if flag_multi_class:
+    print(mask.shape)
     new_mask = np.zeros(mask.shape + (num_class,))
     for i in range(num_class):
       new_mask[mask == i, i] = 1
