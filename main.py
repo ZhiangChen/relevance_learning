@@ -39,6 +39,7 @@ target_size = (256, 256)
 #                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
 #                    flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1)
 if not args.use_pfile:
+  print(args.batch_size, args.image_folder, args.train_path, data_gen_args)
   # myGene = trainGenerator(batch_size=args.batch_size, train_path=args.train_path, image_folder=args.image_folder, mask_folder=args.mask_folder,
   #                       heatmap_folder=args.heatmap_folder, aug_dict=data_gen_args, image_color_mode="rgb",
   #                  mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
