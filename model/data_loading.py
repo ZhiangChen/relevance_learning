@@ -20,7 +20,7 @@ def adjustData(img, mask, heatmap, flag_multi_class, num_class):
   # heatmap to [0, 1]
   heatmap = np.clip(heatmap, 0.0, 1.0)
 
-  return (img, mask, heatmap)
+  return img, mask, heatmap
 
 
 def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, aug_dict, image_color_mode="rgb",
