@@ -65,14 +65,14 @@ def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_fo
     save_prefix=heatmap_save_prefix,
     seed=seed)
   try:
-    train_generator = itertools.izip(image_generator, mask_generator, heatmap_generator)
-    print('working with izip')
+    train_generator = itertools.izip(image_generator, [mask_generator, heatmap_generator])
+    # print('working with izip')
   except:
-    train_generator = zip(image_generator, mask_generator, heatmap_generator)
-  print('trying to adjust data')
-  for (img, mask, heatmap) in train_generator:
+    train_generator = zip(image_generator, [mask_generator, heatmap_generator])
+  # print('trying to adjust data')
+  for (img, [mask, heatmap]) in train_generator:
     img, mask, heatmap = adjustData(img, mask, heatmap, flag_multi_class, num_class)
-    yield (img, mask, heatmap)
+    yield (img, [mask, heatmap])
 
 
 def testGenerator(test_path, num_image=30, target_size=(256, 256), flag_multi_class=False, as_gray=False):
