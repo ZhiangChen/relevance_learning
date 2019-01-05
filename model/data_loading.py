@@ -72,7 +72,8 @@ def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_fo
   # print('trying to adjust data')
   for (img, mask, heatmap) in train_generator:
     img, mask, heatmap = adjustData(img, mask, heatmap, flag_multi_class, num_class)
-    yield (img, [mask, heatmap])
+    # yield (img, [mask, heatmap])
+    yield (img, mask)
 
 
 def testGenerator(test_path, num_image=30, target_size=(256, 256), flag_multi_class=False, as_gray=False):
