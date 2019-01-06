@@ -74,6 +74,7 @@ if args.mode == 'train':
 
   try:
     model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
+    print('using pretrained data')
   except:
     model = unet(num_classes=3, seg_only=True)
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=True)
