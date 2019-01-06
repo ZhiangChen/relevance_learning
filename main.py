@@ -25,7 +25,14 @@ ap.add_argument('-hs', '--heatmap_save_prefix', default='heatmap', dest='heatmap
 ap.add_argument('-c', '--class_num', default=2, dest='class_num', type=int)
 args = ap.parse_args()
 
-data_gen_args = dict(horizontal_flip=True,)
+# data_gen_args = dict(horizontal_flip=True,)
+data_gen_args = dict(rotation_range=0.2,
+                    width_shift_range=0.05,
+                    height_shift_range=0.05,
+                    shear_range=0.05,
+                    zoom_range=0.05,
+                    horizontal_flip=True,
+                    fill_mode='nearest')
 batch_size = 16
 train_path = '../scale6_train/multiclass/heatmap_train/train/training'
 valid_path = '../scale6_train/multiclass/heatmap_train/train/validation'
@@ -77,9 +84,9 @@ else:
 
 model = unet(num_classes=3, seg_only=True)
 model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=True)
-# tb = TensorBoard(log_dir='./logs', histogram_freq=0, batch_size=32, write_graph=True,
-#                             write_grads=False, write_images=True, embeddings_freq=0, embeddings_layer_names=None,
-#                             embeddings_metadata=None, embeddings_data=None, update_freq='epoch')
+tb = TensorBoard(log_dir='./logs', histogram_freq=0, batch_size=32, write_graph=True,
+                            write_grads=False, write_images=True, embeddings_freq=0, embeddings_layer_names=None,
+                            embeddings_metadata=None, embeddings_data=None)
 # for i in range(args.num_epochs):
 model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint])
 eval = model.evaluate_generator(myValGene, steps=10, verbose=1)
