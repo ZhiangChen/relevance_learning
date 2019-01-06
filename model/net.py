@@ -5,7 +5,7 @@ from model.utils import mse
 
 
 def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_only=True):
-  inputs = Input(input_size)
+  inputs = Input(input_size, name='input')
 
   # Conv part
   conv1 = Conv2D(64, 3, activation='relu', padding='same', kernel_initializer='he_normal')(inputs)
