@@ -91,7 +91,7 @@ tb = TensorBoard(log_dir = './logs', histogram_freq = 0,
   batch_size = 16, write_graph = True, write_grads = False,
   write_images = False, embeddings_freq = 10,
   embeddings_layer_names = ['input', 'segmentation', 'heatmap'], embeddings_metadata = None,
-  embeddings_data = None, update_freq = "epoch")
+  embeddings_data = None, update_freq = 160)
 # for i in range(args.num_epochs):
 model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
 eval = model.evaluate_generator(myValGene, steps=10, verbose=1)
