@@ -84,12 +84,12 @@ if args.mode == 'train':
     embeddings_data = None, update_freq = 160)
   # for i in range(args.num_epochs):
   model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
-  eval = model.evaluate_generator(myValGene, steps=10, verbose=1)
+  eval = model.evaluate_generator(myValGene, steps=10, verbose=1, workers=1)
   print(eval)
   model2 = unet(pretrained_weights=args.logs_dir, num_classes=3, seg_only=False)
   # for j in range(args.num_epochs):
   model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300,callbacks=[model_checkpoint, tb])
-  eval = model2.evaluate_generator(myValGene, steps=10, verbose=1)
+  eval = model2.evaluate_generator(myValGene, steps=10, verbose=1, workers=1)
   print(eval)
 
 elif args.mode == 'test':
@@ -111,7 +111,7 @@ elif args.mode == 'test':
   except:
     raise ValueError('No model at specified dir')
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss', verbose=1, save_best_only=True)
-  eval = model.evaluate_generator(myGene, verbose=1)
+  eval = model.evaluate_generator(myGene, verbose=1, workers=1)
 
 else:
   if not args.use_pfile:
@@ -122,5 +122,5 @@ else:
     model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
-  output = model.predict_generator(myGene)
+  output = model.predict_generator(myGene, workers=1)
   np.savez('prediction.npz', output)
