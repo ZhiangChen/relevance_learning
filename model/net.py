@@ -81,6 +81,7 @@ def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_o
 
   # model.summary()
 
+  print(pretrained_weights)
   if (pretrained_weights):
     print('loading weights'+pretrained_weights)
     model.load_weights(pretrained_weights)
