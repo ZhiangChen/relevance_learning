@@ -5,6 +5,7 @@ import glob
 import skimage.io as io
 import skimage.transform as trans
 import itertools
+import threading
 
 
 def adjustData(img, mask, heatmap, flag_multi_class, num_class):
@@ -24,7 +25,34 @@ def adjustData(img, mask, heatmap, flag_multi_class, num_class):
 
   return img, mask, heatmap
 
+class threadsafe_iter:
+    """Takes an iterator/generator and makes it thread-safe by
+    serializing call to the `next` method of given iterator/generator.
+    """
 
+    def __init__(self, it):
+      self.it = it
+      self.lock = threading.Lock()
+
+    def __iter__(self):
+      return self
+
+    def next(self):
+      with self.lock:
+        return self.it.next()
+
+
+def threadsafe_generator(f):
+  """A decorator that takes a generator function and makes it thread-safe.
+  """
+
+  def g(*a, **kw):
+    return threadsafe_iter(f(*a, **kw))
+
+  return g
+
+
+@threadsafe_generator
 def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, aug_dict, image_color_mode="rgb",
                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
                    flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1):
@@ -77,7 +105,7 @@ def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_fo
     # yield (img, [mask, heatmap])
     yield (img, [mask, heatmap])
 
-
+@threadsafe_generator
 def testGenerator(test_path, num_image=5, target_size=(256, 256), flag_multi_class=False, as_gray=False):
     for i in range(num_image):
       img = io.imread(os.path.join(test_path, "%d.png" % i), as_gray=as_gray)
