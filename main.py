@@ -85,12 +85,12 @@ if args.mode == 'train':
     embeddings_data = None, update_freq = 160)
   # for i in range(args.num_epochs):
   model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
-  eval = model.evaluate_generator(myValGene, steps=10, verbose=1, workers=1)
+  eval = model.evaluate_generator(myValGene, steps=10, verbose=1, workers=1, use_multiprocessing=True)
   print(eval)
   model2 = unet(pretrained_weights=args.logs_dir, num_classes=3, seg_only=False)
   # for j in range(args.num_epochs):
   model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300,callbacks=[model_checkpoint, tb])
-  eval = model2.evaluate_generator(myValGene, steps=10, verbose=1, workers=1)
+  eval = model2.evaluate_generator(myValGene, steps=10, verbose=1, workers=1, use_multiprocessing=True)
   print(eval)
 
 elif args.mode == 'test':
