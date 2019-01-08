@@ -123,5 +123,5 @@ else:
     model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
-  output = model.predict_generator(myGene, workers=1)
+  output = model.predict_generator(myGene, workers=1, steps=5)
   np.savez('prediction.npz', output)
