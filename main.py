@@ -116,9 +116,9 @@ elif args.mode == 'test':
 
 else:
   if not args.use_pfile:
-    myGene = testGenerator(args.test_path)
+    myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
-    myGene = testGenerator(test_path)
+    myGene = testGenerator(1, test_path, image_folder)
   try:
     model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
   except:
