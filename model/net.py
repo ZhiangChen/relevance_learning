@@ -2,6 +2,7 @@ from keras.models import *
 from keras.layers import *
 from keras.optimizers import *
 from model.utils import mse
+import os
 
 
 def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_only=True):
@@ -71,7 +72,7 @@ def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_o
   #               metrics=['accuracy'])
   if not seg_only:
     model.compile(optimizer=Adam(lr=1e-4), loss={'segmentation': 'binary_crossentropy', 'heatmap':mse},
-                  loss_weights={'segmentation':0.1, 'heatmap': 1},
+                  loss_weights={'segmentation':0.1, 'heatmap': 10},
                 metrics={'segmentation': 'accuracy', 'heatmap': mse})
   else:
     model.compile(optimizer=Adam(lr=1e-4),
@@ -81,9 +82,8 @@ def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_o
 
   # model.summary()
 
-  print(pretrained_weights)
-  if (pretrained_weights):
-    print('loading weights'+pretrained_weights)
+  if (pretrained_weights) and os.path.exists(pretrained_weights):
+    print('loading weights '+pretrained_weights)
     model.load_weights(pretrained_weights)
 
   return model

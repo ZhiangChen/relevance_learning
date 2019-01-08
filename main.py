@@ -123,8 +123,9 @@ else:
     myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
     myGene = testGenerator(1, test_path, image_folder)
+  model = unet(num_classes=3, seg_only=True)
   try:
-    model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
+    model.load_weights(args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
   output = model.predict_generator(myGene, workers=1, steps=5)
