@@ -124,5 +124,4 @@ else:
   except:
     raise ValueError('No model at specified dir')
   output = model.predict_generator(myGene, workers=1, steps=5)
-  print(output[0].shape)
-  np.savez('prediction.npz', output)
+  np.savez('prediction.npz', output[0], output[1])
