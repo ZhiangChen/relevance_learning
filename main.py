@@ -2,7 +2,9 @@ from model.net import unet
 from keras.callbacks import ModelCheckpoint, TensorBoard
 import argparse
 import os
+import glob
 from model.data_loading import *
+from model.utils import save_images
 import numpy as np
 
 ap = argparse.ArgumentParser()
@@ -24,6 +26,7 @@ ap.add_argument('-is', '--image_save_prefix', default='image', dest='image_save_
 ap.add_argument('-ms', '--mask_save_prefix', default='mask', dest='mask_save_prefix')
 ap.add_argument('-hs', '--heatmap_save_prefix', default='heatmap', dest='heatmap_save_prefix')
 ap.add_argument('-c', '--class_num', default=2, dest='class_num', type=int)
+ap.add_argument('-s', '--save_dir', default='../results', dest='save_dir')
 args = ap.parse_args()
 
 # data_gen_args = dict(horizontal_flip=True,)
@@ -77,7 +80,7 @@ if args.mode == 'train':
     print('using pretrained data')
   except:
     model = unet(num_classes=3, seg_only=True)
-  model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=True)
+  model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=False)
   tb = TensorBoard(log_dir = './logs', histogram_freq = 0,
     batch_size = 16, write_graph = True, write_grads = False,
     write_images = False, embeddings_freq = 0,
@@ -115,6 +118,7 @@ elif args.mode == 'test':
   eval = model.evaluate_generator(myGene, verbose=1, workers=1)
 
 else:
+
   if not args.use_pfile:
     myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
@@ -124,4 +128,4 @@ else:
   except:
     raise ValueError('No model at specified dir')
   output = model.predict_generator(myGene, workers=1, steps=5)
-  np.savez('prediction.npz', output[0], output[1])
+  save_images(output, args.save_dir)

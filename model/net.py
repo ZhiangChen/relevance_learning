@@ -70,12 +70,12 @@ def unet(pretrained_weights=None, input_size=(256, 256, 3), num_classes=2, seg_o
   # model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy',
   #               metrics=['accuracy'])
   if not seg_only:
-    model.compile(optimizer=Adam(lr=1e-4), loss={'segmentation': 'binary_crossentropy', 'heatmap':'mean_squared_error'},
+    model.compile(optimizer=Adam(lr=1e-4), loss={'segmentation': 'binary_crossentropy', 'heatmap':mse},
                   loss_weights={'segmentation':0.1, 'heatmap': 1},
                 metrics={'segmentation': 'accuracy', 'heatmap': mse})
   else:
     model.compile(optimizer=Adam(lr=1e-4),
-                  loss={'segmentation': 'binary_crossentropy', 'heatmap': 'mean_squared_error'},
+                  loss={'segmentation': 'binary_crossentropy', 'heatmap': mse},
                   loss_weights={'segmentation': 1, 'heatmap': 0},
                   metrics={'segmentation': 'accuracy', 'heatmap': mse})
 
