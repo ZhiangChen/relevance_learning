@@ -98,6 +98,10 @@ if args.mode == 'train':
 
 elif args.mode == 'test':
   if not args.use_pfile:
+    nImages = len(os.listdir(os.path.join(args.test_path, args.image_folder)))
+  else:
+    nImages = len(os.listdir(os.path.join(test_path, image_folder)))
+  if not args.use_pfile:
     myGene = trainGenerator(args.batch_size, args.test_path, args.image_folder,
                             args.mask_folder,
                             args.heatmap_folder, data_gen_args, image_color_mode="rgb",
@@ -115,7 +119,7 @@ elif args.mode == 'test':
   except:
     raise ValueError('No model at specified dir')
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss', verbose=1, save_best_only=True)
-  eval = model.evaluate_generator(myGene, verbose=1, workers=1)
+  eval = model.evaluate_generator(myGene, verbose=1, workers=1, steps=nImages)
 
 else:
   if not args.use_pfile:
