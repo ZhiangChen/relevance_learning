@@ -28,4 +28,4 @@ def save_images(net_out, save_dir, visualize=False):
     seg_r = Image.fromarray(seg)
     seg_r.save(os.path.join(save_dir, 'masks', str(i)+'.png'))
     heatmap_r = Image.fromarray(heatmap)
-    heatmap_r.save(os.path.join(save_dir, 'heatmaps', str(i) + '.png'))
+    heatmap_r.save(os.path.join(save_dir, 'heatmaps', str(i) + '.tiff'))
