@@ -118,7 +118,10 @@ elif args.mode == 'test':
   eval = model.evaluate_generator(myGene, verbose=1, workers=1)
 
 else:
-  nImages = len(os.listdir(os.path.join(args.test_path, args.image_folder)))
+  if not args.use_pfile:
+    nImages = len(os.listdir(os.path.join(args.test_path, args.image_folder)))
+  else:
+    nImages = len(os.listdir(os.path.join(test_path, image_folder)))
   print(nImages)
   if not args.use_pfile:
     myGene = testGenerator(1, args.test_path, args.image_folder)
