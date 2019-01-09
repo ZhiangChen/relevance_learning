@@ -120,6 +120,7 @@ elif args.mode == 'test':
     raise ValueError('No model at specified dir')
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss', verbose=1, save_best_only=True)
   eval = model.evaluate_generator(myGene, verbose=1, workers=1, steps=nImages)
+  print(eval)
 
 else:
   if not args.use_pfile:
