@@ -118,7 +118,8 @@ elif args.mode == 'test':
   eval = model.evaluate_generator(myGene, verbose=1, workers=1)
 
 else:
-
+  nImages = len(os.listdir(os.path.join(args.test_path, args.image_folder)))
+  print(nImages)
   if not args.use_pfile:
     myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
@@ -128,5 +129,5 @@ else:
     model.load_weights(args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
-  output = model.predict_generator(myGene, workers=1, steps=5)
+  output = model.predict_generator(myGene, workers=1, steps=nImages)
   save_images(output, args.save_dir)
