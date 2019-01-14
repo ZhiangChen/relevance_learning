@@ -30,17 +30,18 @@ ap.add_argument('-s', '--save_dir', default='../results', dest='save_dir')
 args = ap.parse_args()
 
 # data_gen_args = dict(horizontal_flip=True,)
-data_gen_args = dict(rotation_range=0.2,
+data_gen_args = dict(rotation_range=30,
                     width_shift_range=0.05,
                     height_shift_range=0.05,
                     shear_range=0.05,
                     zoom_range=0.05,
                     horizontal_flip=True,
-                    fill_mode='nearest')
+                    fill_mode='reflect')
 batch_size = 16
 train_path = '../scale6_train/multiclass/heatmap_train2/train/training'
 valid_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
 test_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
+num_epochs = 100
 # train_path = 'M:/data/multiclass/heatmap_train/train/training'
 # valid_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
 # test_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
@@ -79,27 +80,26 @@ if args.mode == 'train':
                             flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
   print('here')
 
-  try:
-    model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
-    print('using pretrained data')
-  except:
-    model = unet(num_classes=3, seg_only=True)
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=False)
   tb = TensorBoard(log_dir = './logs', histogram_freq = 0,
     batch_size = 16, write_graph = True, write_grads = False,
     write_images = False, embeddings_freq = 0,
     embeddings_layer_names = None, embeddings_metadata = None,
-    embeddings_data = None)
-  # for i in range(args.num_epochs):
-
-  model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
-  # eval = model.evaluate_generator(myValGene, steps=10, verbose=1, workers=1, use_multiprocessing=True)
-  print(eval)
+    embeddings_data = None, update_freq=160)
+  try:
+    model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
+    print('using pretrained data')
+  except:
+    model = unet(num_classes=3, seg_only=True)
+  if not args.use_pfile:
+    model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
+  else:
+    model.fit_generator(myGene,steps_per_epoch=300,epochs=num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
   model2 = unet(pretrained_weights=args.logs_dir, num_classes=3, seg_only=False)
-  # for j in range(args.num_epochs):
-  model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300,callbacks=[model_checkpoint, tb])
-  # eval = model2.evaluate_generator(myValGene, steps=10, verbose=1, workers=1, use_multiprocessing=True)
-  print(eval)
+  if not args.use_pfile:
+    model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300,callbacks=[model_checkpoint, tb])
+  else:
+    model2.fit_generator(myGene,steps_per_epoch=300,epochs=num_epochs, validation_data=myValGene, validation_steps=300,callbacks=[model_checkpoint, tb])
 
 elif args.mode == 'test':
   if not args.use_pfile:
