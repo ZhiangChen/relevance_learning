@@ -113,8 +113,8 @@ if __name__ == '__main__':
   # args = ap.parse_args()
   # idir = args.input_folder
   # odir = args.output_folder
-  idir = 'J:/data/multiclass/test_19/test'
-  odir = 'J:/data/multiclass/test_19/train'
+  idir = 'M:/data/multiclass/test_18/test'
+  odir = 'M:/data/multiclass/test_18/train'
 
   folders = ['images', 'annotations']
   targets = ['images', 'masks', 'heatmaps']
@@ -143,9 +143,9 @@ if __name__ == '__main__':
       label = np.asarray(Image.open(os.path.join(idir, 'annotations', set, 'label_' + i_path)))
       heatmap, new_label = housefeat_extractor(label, houseLab=2, nSamples=200, radius=1.5)
       # hmg = Image.fromarray(heatmap, mode='F')
-      hmg = Image.fromarray(heatmap)
+      hmg = Image.fromarray((heatmap*255).astype(np.uint8))
       lmg = Image.fromarray(new_label)
-      hmg.save(os.path.join(odir, set, 'heatmaps', i_path[:-4]+'.tiff'), 'TIFF')
+      hmg.save(os.path.join(odir, set, 'heatmaps', i_path[:-4]+'.png'), 'PNG')
       lmg.save(os.path.join(odir, set, 'masks', i_path), 'PNG')
 
 

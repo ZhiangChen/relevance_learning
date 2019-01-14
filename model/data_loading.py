@@ -21,7 +21,8 @@ def adjustData(img, mask, heatmap, flag_multi_class, num_class):
       new_mask[mask == i, i] = 1
     mask = new_mask
   # heatmap to [0, 1]
-  heatmap = np.clip(heatmap, 0.0, 1.0)
+  heatmap = heatmap / 255.0
+  # heatmap = np.clip(heatmap, 0.0, 1.0)
 
   return img, mask, heatmap
 
@@ -52,7 +53,7 @@ def threadsafe_generator(f):
   return g
 
 
-@threadsafe_generator
+# @threadsafe_generator
 def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, aug_dict, image_color_mode="rgb",
                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
                    flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1):

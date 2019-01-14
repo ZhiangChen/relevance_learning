@@ -38,9 +38,12 @@ data_gen_args = dict(rotation_range=0.2,
                     horizontal_flip=True,
                     fill_mode='nearest')
 batch_size = 16
-train_path = '../scale6_train/multiclass/heatmap_train/train/training'
-valid_path = '../scale6_train/multiclass/heatmap_train/train/validation'
-test_path = '../scale6_train/multiclass/heatmap_train/train/validation'
+train_path = '../scale6_train/multiclass/heatmap_train2/train/training'
+valid_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
+test_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
+# train_path = 'M:/data/multiclass/heatmap_train/train/training'
+# valid_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
+# test_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
 image_folder = 'images'
 mask_folder = 'masks'
 heatmap_folder = 'heatmaps'
@@ -74,6 +77,7 @@ if args.mode == 'train':
                             mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                             heatmap_save_prefix="heatmap",
                             flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
+  print('here')
 
   try:
     model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
@@ -85,8 +89,9 @@ if args.mode == 'train':
     batch_size = 16, write_graph = True, write_grads = False,
     write_images = False, embeddings_freq = 0,
     embeddings_layer_names = None, embeddings_metadata = None,
-    embeddings_data = None, update_freq = 160)
+    embeddings_data = None)
   # for i in range(args.num_epochs):
+
   model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=300, callbacks=[model_checkpoint, tb])
   # eval = model.evaluate_generator(myValGene, steps=10, verbose=1, workers=1, use_multiprocessing=True)
   print(eval)
