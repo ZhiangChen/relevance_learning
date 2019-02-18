@@ -48,7 +48,7 @@ num_epochs = 20
 image_folder = 'images'
 mask_folder = 'masks'
 heatmap_folder = 'heatmaps'
-class_num = 3
+class_num = 4
 target_size = (256, 256)
 # trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, aug_dict, image_color_mode="rgb",
 #                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
@@ -87,10 +87,10 @@ if args.mode == 'train':
     embeddings_layer_names = None, embeddings_metadata = None,
     embeddings_data = None, update_freq=160)
   try:
-    model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
+    model = unet(num_classes=4, seg_only=True, pretrained_weights=args.logs_dir)
     print('using pretrained data')
   except:
-    model = unet(num_classes=3, seg_only=True)
+    model = unet(num_classes=4, seg_only=True)
   if not args.use_pfile:
     model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=5, callbacks=[model_checkpoint, tb])
   else:
@@ -120,7 +120,7 @@ elif args.mode == 'test':
                      flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
 
   try:
-    model = unet(num_classes=3, seg_only=True, pretrained_weights=args.logs_dir)
+    model = unet(num_classes=4, seg_only=True, pretrained_weights=args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss', verbose=1, save_best_only=True)
@@ -137,7 +137,7 @@ else:
     myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
     myGene = testGenerator(1, test_path, image_folder)
-  model = unet(num_classes=3, seg_only=True)
+  model = unet(num_classes=4, seg_only=True)
   try:
     model.load_weights(args.logs_dir)
   except:
