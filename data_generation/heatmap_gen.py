@@ -21,8 +21,8 @@ def housefeat_extractor(label_img, houseLab = 3, global_feat=False, x=0, y=0, l=
   '''
   # some parameters
   depth = 4
-  selem = np.ones([7, 7])
-  sigma = 3
+  selem = np.ones([2, 2])
+  sigma = 0.25
   mpp_23 = 0.0187
   pos_thr = 0.2
 
@@ -113,8 +113,10 @@ if __name__ == '__main__':
   # args = ap.parse_args()
   # idir = args.input_folder
   # odir = args.output_folder
-  idir = 'M:/data/multiclass/test_18/test'
-  odir = 'M:/data/multiclass/test_18/train'
+  # idir = 'M:/data/multiclass/test_18/test'
+  # odir = 'M:/data/multiclass/test_18/train'
+  idir = 'H:/ROBO Master/AerialApp/untitled/AA1516'
+  odir = 'H:/ROBO Master/AerialApp/untitled/AA_train'
 
   folders = ['images', 'annotations']
   targets = ['images', 'masks', 'heatmaps']
@@ -140,8 +142,8 @@ if __name__ == '__main__':
       i_name = i_path.split('.')[0]
       img = Image.open(os.path.join(idir, 'images', set, i_path))
       img.save(os.path.join(odir, set, 'images', i_path), 'PNG')
-      label = np.asarray(Image.open(os.path.join(idir, 'annotations', set, 'label_' + i_path)))
-      heatmap, new_label = housefeat_extractor(label, houseLab=2, nSamples=200, radius=1.5)
+      label = np.asarray(Image.open(os.path.join(idir, 'annotations', set, i_path)))
+      heatmap, new_label = housefeat_extractor(label, houseLab=3, nSamples=200, radius=0.5)
       # hmg = Image.fromarray(heatmap, mode='F')
       hmg = Image.fromarray((heatmap*255).astype(np.uint8))
       lmg = Image.fromarray(new_label)

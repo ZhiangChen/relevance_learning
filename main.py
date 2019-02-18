@@ -38,10 +38,10 @@ data_gen_args = dict(rotation_range=30,
                     horizontal_flip=True,
                     fill_mode='reflect')
 batch_size = 16
-train_path = '../scale6_train/multiclass/heatmap_train2/train/training'
-valid_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
-test_path = '../scale6_train/multiclass/heatmap_train2/train/validation'
-num_epochs = 100
+train_path = '../scale6_train/multiclass/train_18/training'
+valid_path = '../scale6_train/multiclass/train_18/validation'
+test_path = '../scale6_train/multiclass/train_18/validation'
+num_epochs = 20
 # train_path = 'M:/data/multiclass/heatmap_train/train/training'
 # valid_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
 # test_path = 'M:/data/scale6_train/multiclass/heatmap_train/train/validation'
