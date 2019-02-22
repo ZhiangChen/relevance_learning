@@ -135,7 +135,8 @@ def testGenerator(batch_size, train_path, image_folder, image_color_mode="rgb",
     batch_size=batch_size,
     save_to_dir=save_to_dir,
     save_prefix=image_save_prefix,
-    seed=seed)
+    seed=seed,
+    shuffle=False)
   # print('trying to adjust data')
   for img in image_generator:
     if np.max(img) > 1:
