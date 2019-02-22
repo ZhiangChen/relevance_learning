@@ -21,7 +21,7 @@ def focal_L2(y_true, y_pred, gamma=2., alpha=.25):
   pt_t = tf.where(tf.greater(y_true, 0.1), y_pred, y_true)
   pt_0 = tf.where(tf.less_equal(y_true, 0.1), y_pred, tf.zeros_like(y_pred))
   pt_f = tf.where(tf.less_equal(y_true, 0.1), y_pred, y_true)
-  return -K.sum(alpha * K.pow(1. - pt_1, gamma) * K.square(pt_t - y_true)) - K.sum(
+  return K.sum(alpha * K.pow(1. - pt_1, gamma) * K.square(pt_t - y_true)) + K.sum(
     (1 - alpha) * K.pow(pt_0, gamma) * K.square(pt_f - y_true))
 
 
