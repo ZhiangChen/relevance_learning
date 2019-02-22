@@ -19,8 +19,8 @@ def focal(y_true, y_pred, gamma=2., alpha=.25):
 def focal_L2(y_true, y_pred, gamma=2., alpha=.25):
   pt_1 = tf.where(tf.greater(y_true, 0.1), y_pred, tf.ones_like(y_pred))
   pt_0 = tf.where(tf.less_equal(y_true, 0.1), y_pred, tf.zeros_like(y_pred))
-  return -K.sum(alpha * K.pow(1. - pt_1, gamma) * K.log(pt_1)) - K.sum(
-    (1 - alpha) * K.pow(pt_0, gamma) * K.log(1. - pt_0))
+  return -K.sum(alpha * K.pow(1. - pt_1, gamma) * K.log(K.clip(pt_1, 1e-8, 1e10))) - K.sum(
+    (1 - alpha) * K.pow(pt_0, gamma) * K.log(K.clip(1. - pt_0, 1e-8, 1e10)))
 
 
 def weighted_L2(y_true, y_pred):
