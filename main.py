@@ -99,7 +99,7 @@ if args.mode == 'train':
   if not args.use_pfile:
     model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=5,callbacks=[model_checkpoint, tb])
   else:
-    model2.fit_generator(myGene,steps_per_epoch=300,epochs=5 * num_epochs, validation_data=myValGene, validation_steps=5,callbacks=[model_checkpoint, tb])
+    model2.fit_generator(myGene,steps_per_epoch=300,epochs=num_epochs, validation_data=myValGene, validation_steps=5,callbacks=[model_checkpoint, tb])
 
 elif args.mode == 'test':
   if not args.use_pfile:
