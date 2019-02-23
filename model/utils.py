@@ -39,7 +39,7 @@ def save_images(net_out, save_dir, visualize=False):
   for i in range(N):
     seg = (np.argmax(segs[i, ...], axis=2) * 85).astype(np.uint8)
     heatmap = heatmaps[i, ..., 0]
-    heatmap = (255 * heatmap).astype(np.uint8)
+    heatmap = (255 * heatmap.clip(0, 1)).astype(np.uint8)
     if visualize:
       plt.imshow(seg)
       plt.imshow(heatmap)
