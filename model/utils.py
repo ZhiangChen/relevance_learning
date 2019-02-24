@@ -31,7 +31,10 @@ def weighted_L2(y_true, y_pred):
 
 def hm_recall(y_true, y_pred):
   pt_t = tf.where(tf.greater(y_true, 1e-4), y_pred, tf.zeros_like(y_pred))
-  return K.sum(pt_t) / K.sum(y_true)
+  if K.sum(y_true) == 0:
+    return 0
+  else:
+    return K.sum(K.clip(pt_t, 0, 1)) / K.sum(y_true)
 
 
 def save_images(net_out, save_dir, visualize=False):

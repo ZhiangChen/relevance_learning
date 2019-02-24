@@ -72,8 +72,8 @@ if __name__ == '__main__':
 
   print(np.asarray(all_gps))
 
-  # levels = [23, 22, 21, 20, 19, 18, 17, 16, 15]
-  levels = [18, 19, 20]
+  levels = [23, 22, 21, 17, 16, 15]
+  # levels = [18, 19, 20]
 
   for level in levels:
     levelLock = False
