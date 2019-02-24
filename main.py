@@ -87,10 +87,10 @@ if args.mode == 'train':
     write_images = False, embeddings_freq = 0,
     embeddings_layer_names = None, embeddings_metadata = None,
     embeddings_data = None, update_freq=160)
-  try:
+  if os.path.exists(args.logs_dir):
     model = unet(num_classes=4, seg_only=True, pretrained_weights=args.logs_dir)
     print('using pretrained data')
-  except:
+  else:
     model = unet(num_classes=4, seg_only=True)
     if not args.use_pfile:
       model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=50, callbacks=[model_checkpoint, tb])
