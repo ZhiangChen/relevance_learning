@@ -34,7 +34,8 @@ def hm_recall(y_true, y_pred):
   if K.sum(y_true) == 0:
     return 0
   else:
-    return K.sum(K.clip(pt_t, 0, 1)) / K.sum(y_true)
+    # return K.sum(K.clip(pt_t, 0, 1)) / K.sum(y_true)
+    return K.sum(y_true)
 
 
 def save_images(net_out, save_dir, visualize=False):
