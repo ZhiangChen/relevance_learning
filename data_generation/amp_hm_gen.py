@@ -21,7 +21,7 @@ def gen_label(level, ix_lvl, iy_lvl, all_gps, thresh):
     Rp = 0.5 + np.log(level - 14) / np.log(3)
     # print(Rp)
     for i in range(h.shape[0]):
-      label += np.exp(- ((gps_map_x - all_gps[h[i]][1]) ** 2 + (gps_map_y - all_gps[h[i]][0]) ** 2) / (0.02 * thresh * Rp) ** 2)
+      label += np.exp(- ((gps_map_x - all_gps[h[i]][1]) ** 2 + (gps_map_y - all_gps[h[i]][0]) ** 2) / (0.05 * thresh * Rp) ** 2)
 
     label = label.clip(0, 1)
   return label
@@ -72,8 +72,8 @@ if __name__ == '__main__':
 
   print(np.asarray(all_gps))
 
-  levels = [23, 22, 21, 20, 19, 18, 17, 16, 15]
-  # levels = [18, 17, 16, 15]
+  # levels = [23, 22, 21, 20, 19, 18, 17, 16, 15]
+  levels = [18, 19, 20]
 
   for level in levels:
     levelLock = False
