@@ -29,6 +29,11 @@ def weighted_L2(y_true, y_pred):
   return K.sum(tf.multiply(K.exp(3 *(K.clip(y_true, 0, 1) - K.clip(y_pred, 0, 1))), K.square(y_pred - y_true)))
 
 
+def hm_recall(y_true, y_pred):
+  pt_t = tf.where(tf.greater(y_true, 1e-4), y_pred, tf.zeros_like(y_pred))
+  return K.sum(pt_t) / K.sum(y_true)
+
+
 def save_images(net_out, save_dir, visualize=False):
   if not os.path.exists(os.path.join(save_dir, 'masks')):
     os.makedirs(os.path.join(save_dir, 'masks'))
