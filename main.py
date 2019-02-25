@@ -91,13 +91,13 @@ if args.mode == 'train':
     model = unet(num_classes=4, seg_only=True, pretrained_weights=args.logs_dir)
     print('using pretrained data')
   else:
-    model = unet(num_classes=4, seg_only=True)
+    model = unet(num_classes=4, seg_only=True, layers_trainable=True)
     if not args.use_pfile:
       model.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=50, callbacks=[model_checkpoint, tb])
     else:
       model.fit_generator(myGene,steps_per_epoch=300,epochs=num_epochs, validation_data=myValGene, validation_steps=50, callbacks=[model_checkpoint, tb])
 
-  model2 = unet(pretrained_weights=args.logs_dir, num_classes=4, seg_only=False)
+  model2 = unet(pretrained_weights=args.logs_dir, num_classes=4, seg_only=False, layers_trainable=False)
   if not args.use_pfile:
     model2.fit_generator(myGene,steps_per_epoch=300,epochs=args.num_epochs, validation_data=myValGene, validation_steps=50,callbacks=[model_checkpoint_reg, tb])
   else:
