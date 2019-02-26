@@ -133,7 +133,7 @@ else:
     myGene = testGenerator(1, args.test_path, args.image_folder)
   else:
     myGene = testGenerator(1, test_path, image_folder)
-  model = regnet()
+  model = regnet(pretrained_weights=args.logs_dir)
   try:
     model.load_weights(args.logs_dir)
   except:

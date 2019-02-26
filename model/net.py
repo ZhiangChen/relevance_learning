@@ -142,7 +142,7 @@ def regnet(pretrained_weights=None, input_size=(256, 256, 3), layers_trainable=T
   # Multiclass segmentation output
   conv9 = Conv2D(1, 3, activation='linear', padding='same', kernel_initializer='he_normal', name='heatmap', trainable=layers_trainable)(conv9)
 
-  model = Model(inputs=inputs, output=[conv9])
+  model = Model(inputs=inputs, output=conv9)
   # model = Model(inputs=inputs, output=conv9)
   # model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy',
   #               metrics=['accuracy'])
