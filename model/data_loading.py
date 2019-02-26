@@ -56,7 +56,7 @@ def threadsafe_generator(f):
 # @threadsafe_generator
 def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, aug_dict, image_color_mode="rgb",
                    mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",heatmap_save_prefix="heatmap",
-                   flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1):
+                   flag_multi_class=True, num_class=2, save_to_dir=None, target_size=(256, 256), seed=1, reg_only=False):
   '''
   can generate image and mask at the same time
   use the same seed for image_datagen and mask_datagen to ensure the transformation for image and mask is the same
@@ -101,10 +101,16 @@ def trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_fo
   except:
     train_generator = zip(image_generator, mask_generator, heatmap_generator)
   # print('trying to adjust data')
-  for (img, mask, heatmap) in train_generator:
-    img, mask, heatmap = adjustData(img, mask, heatmap, flag_multi_class, num_class)
-    # yield (img, [mask, heatmap])
-    yield (img, [mask, heatmap])
+  if reg_only:
+    for (img, mask, heatmap) in train_generator:
+      img, mask, heatmap = adjustData(img, mask, heatmap, flag_multi_class, num_class)
+      # yield (img, [mask, heatmap])
+      yield (img, heatmap)
+  else:
+    for (img, mask, heatmap) in train_generator:
+      img, mask, heatmap = adjustData(img, mask, heatmap, flag_multi_class, num_class)
+      # yield (img, [mask, heatmap])
+      yield (img, [mask, heatmap])
 
 
 # def testGenerator(test_path, num_image=5, target_size=(256, 256), flag_multi_class=False, as_gray=False):
