@@ -61,23 +61,23 @@ if args.mode == 'train':
                             mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                             heatmap_save_prefix="heatmap",
                             flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
-                            target_size=(args.h, args.w), seed=1)
+                            target_size=(args.h, args.w), seed=1, reg_only=True)
     myValGene = trainGenerator(args.batch_size, args.valid_path, args.image_folder,
                                args.mask_folder,
                                args.heatmap_folder, data_gen_args, image_color_mode="rgb",
                                mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                                heatmap_save_prefix="heatmap",
                                flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
-                               target_size=(args.h, args.w), seed=1)
+                               target_size=(args.h, args.w), seed=1, reg_only=True)
   else:
     myGene = trainGenerator(batch_size, train_path, image_folder, mask_folder, heatmap_folder, data_gen_args, image_color_mode="rgb",
                      mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
-                     flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
+                     flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1, reg_only=True)
     myValGene = trainGenerator(batch_size, valid_path, image_folder, mask_folder, heatmap_folder, data_gen_args,
                             image_color_mode="rgb",
                             mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                             heatmap_save_prefix="heatmap",
-                            flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
+                            flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1, reg_only=True)
   print('here')
 
   model_checkpoint = ModelCheckpoint(args.logs_dir, monitor='loss',verbose=1, save_best_only=False)
@@ -109,11 +109,11 @@ elif args.mode == 'test':
                             mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask",
                             heatmap_save_prefix="heatmap",
                             flag_multi_class=True, num_class=args.class_num, save_to_dir=None,
-                            target_size=(args.h, args.w), seed=1)
+                            target_size=(args.h, args.w), seed=1, reg_only=True)
   else:
     myGene = trainGenerator(batch_size, test_path, image_folder, mask_folder, heatmap_folder, data_gen_args, image_color_mode="rgb",
                      mask_color_mode="grayscale", image_save_prefix="image", mask_save_prefix="mask", heatmap_save_prefix="heatmap",
-                     flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1)
+                     flag_multi_class=True, num_class=class_num, save_to_dir=None, target_size=target_size, seed=1, reg_only=True)
 
   try:
     model = regnet(pretrained_weights=args.logs_dir)
