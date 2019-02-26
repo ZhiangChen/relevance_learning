@@ -57,3 +57,17 @@ def save_images(net_out, save_dir, visualize=False):
     seg_r.save(os.path.join(save_dir, 'masks', str(i)+'.png'))
     heatmap_r = Image.fromarray(heatmap)
     heatmap_r.save(os.path.join(save_dir, 'heatmaps', str(i) + '.png'))
+
+
+def save_regs(net_out, save_dir, visualize=False):
+  if not os.path.exists(os.path.join(save_dir, 'heatmaps')):
+    os.makedirs(os.path.join(save_dir, 'heatmaps'))
+  heatmaps = net_out
+  N = heatmaps.shape[0]
+  for i in range(N):
+    heatmap = heatmaps[i, ..., 0]
+    heatmap = (255 * np.clip(heatmap, 0, 1)).astype(np.uint8)
+    if visualize:
+      plt.imshow(heatmap)
+    heatmap_r = Image.fromarray(heatmap)
+    heatmap_r.save(os.path.join(save_dir, 'heatmaps', str(i) + '.png'))
