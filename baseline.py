@@ -4,7 +4,7 @@ import argparse
 import os
 import glob
 from model.data_loading import *
-from model.utils import save_images
+from model.utils import save_images, save_regs
 import numpy as np
 
 ap = argparse.ArgumentParser()
@@ -134,9 +134,10 @@ else:
   else:
     myGene = testGenerator(1, test_path, image_folder)
   model = regnet(pretrained_weights=args.logs_dir)
+
   try:
     model.load_weights(args.logs_dir)
   except:
     raise ValueError('No model at specified dir')
   output = model.predict_generator(myGene, workers=1, steps=nImages)
-  save_images(output, args.save_dir)
+  save_regs(output, args.save_dir)
